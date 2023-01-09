@@ -1,0 +1,65 @@
+From 209d1cf4e79581561695d2e8f1dd45fe13e041d7 Mon Sep 17 00:00:00 2001
+From: Ivan Grokhotkov <ivan@espressif.com>
+Date: Mon, 9 Jan 2023 00:09:02 +0100
+Subject: [PATCH] patches for idf
+
+---
+ include/spdlog/details/os-inl.h |  2 +-
+ include/spdlog/tweakme.h        | 15 ++++++++-------
+ 2 files changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/include/spdlog/details/os-inl.h b/include/spdlog/details/os-inl.h
+index 7f22335f..310212d3 100644
+--- a/include/spdlog/details/os-inl.h
++++ b/include/spdlog/details/os-inl.h
+@@ -286,7 +286,7 @@ SPDLOG_INLINE int utc_minutes_offset(const std::tm &tm)
+     return offset;
+ #else
+ 
+-#    if defined(sun) || defined(__sun) || defined(_AIX) || (!defined(_BSD_SOURCE) && !defined(_GNU_SOURCE))
++#    if defined(sun) || defined(__sun) || defined(_AIX) || defined(ESP_PLATFORM) || (!defined(_BSD_SOURCE) && !defined(_GNU_SOURCE))
+     // 'tm_gmtoff' field is BSD extension and it's missing on SunOS/Solaris
+     struct helper
+     {
+diff --git a/include/spdlog/tweakme.h b/include/spdlog/tweakme.h
+index 5bcb5ff4..59e9aab9 100644
+--- a/include/spdlog/tweakme.h
++++ b/include/spdlog/tweakme.h
+@@ -35,7 +35,7 @@
+ //
+ // #define SPDLOG_NO_THREAD_ID
+ ///////////////////////////////////////////////////////////////////////////////
+-
++#define SPDLOG_NO_THREAD_ID
+ ///////////////////////////////////////////////////////////////////////////////
+ // Uncomment to prevent spdlog from using thread local storage.
+ //
+@@ -44,7 +44,7 @@
+ //
+ // #define SPDLOG_NO_TLS
+ ///////////////////////////////////////////////////////////////////////////////
+-
++#define SPDLOG_NO_TLS
+ ///////////////////////////////////////////////////////////////////////////////
+ // Uncomment to avoid spdlog's usage of atomic log levels
+ // Use only if your code never modifies a logger's log levels concurrently by
+@@ -132,9 +132,10 @@
+ // __PRETTY_FUNCTION__ might be nicer in clang/gcc, and __FUNCTION__ in msvc.
+ // Defaults to __FUNCTION__ (should work on all compilers) if not defined.
+ //
+-// #ifdef __PRETTY_FUNCTION__
+-// # define SPDLOG_FUNCTION __PRETTY_FUNCTION__
+-// #else
+-// # define SPDLOG_FUNCTION __FUNCTION__
+-// #endif
++#ifdef __PRETTY_FUNCTION__
++# define SPDLOG_FUNCTION __PRETTY_FUNCTION__
++#else
++# define SPDLOG_FUNCTION __FUNCTION__
++#endif
+ ///////////////////////////////////////////////////////////////////////////////
++#define SPDLOG_NO_EXCEPTIONS
+\ No newline at end of file
+-- 
+2.37.1
+
