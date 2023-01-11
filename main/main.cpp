@@ -10,9 +10,9 @@ auto main_log = spdlog::stdout_color_mt("main", spdlog::color_mode::always);
 extern "C" void app_main(void)
 {
     spdlog::set_level(spdlog::level::trace); // Set global log level to trace
-    spdlog::set_pattern("[%C-%m-%d %H:%M:%S.%e] [%n] [%^%l%$] %v");
+    spdlog::set_pattern("[%t] [%C-%m-%d %H:%M:%S.%e] [%n] [%^%l%$] %v");
 
-    main_log->trace("spdlog on ESP32");
+    main_log->trace("spdlog on ESP{}", 32);
 
     std::string str{"ESP32"};
     main_log->debug("  |{:20}|", str);        // |ESP32               |

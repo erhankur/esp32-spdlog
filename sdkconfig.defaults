@@ -1,0 +1,4 @@
+#
+# Compiler options
+#
+CONFIG_COMPILER_CXX_EXCEPTIONS=y
